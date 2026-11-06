@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.github",
 
     # Custom app
     "accounts",
@@ -139,6 +140,10 @@ SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "")
 
+# GitHub OAuth Provider Configuration
+GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID", "")
+GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET", "")
+
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "SCOPE": [
@@ -149,7 +154,13 @@ SOCIALACCOUNT_PROVIDERS = {
             "access_type": "online",
         },
         "OAUTH_PKCE_ENABLED": True,
-    }
+    },
+    "github": {
+        "SCOPE": [
+            "user",
+            "user:email",
+        ],
+    },
 }
 
 # If Google OAuth credentials are provided via environment variables, register the app automatically
@@ -158,6 +169,16 @@ if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
         {
             "client_id": GOOGLE_CLIENT_ID,
             "secret": GOOGLE_CLIENT_SECRET,
+            "key": "",
+        }
+    ]
+
+# If GitHub OAuth credentials are provided via environment variables, register the app automatically
+if GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET:
+    SOCIALACCOUNT_PROVIDERS["github"]["APPS"] = [
+        {
+            "client_id": GITHUB_CLIENT_ID,
+            "secret": GITHUB_CLIENT_SECRET,
             "key": "",
         }
     ]

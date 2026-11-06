@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
 
-class GoogleAuthTests(TestCase):
+class OAuthTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(
@@ -14,11 +14,13 @@ class GoogleAuthTests(TestCase):
         )
 
     def test_home_page_unauthenticated(self):
-        """Unauthenticated user sees Sign in with Google button"""
+        """Unauthenticated user sees Sign in with Google and GitHub buttons"""
         response = self.client.get(reverse("home"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Sign in with Google")
         self.assertContains(response, reverse("google_login"))
+        self.assertContains(response, "Sign in with GitHub")
+        self.assertContains(response, reverse("github_login"))
         self.assertContains(response, "You are not logged in.")
 
     def test_home_page_authenticated(self):
@@ -31,8 +33,9 @@ class GoogleAuthTests(TestCase):
         self.assertContains(response, reverse("account_logout"))
 
     def test_urls_reverse_properly(self):
-        """Allauth endpoints resolve properly"""
+        """Allauth endpoints resolve properly for Google and GitHub"""
         self.assertEqual(reverse("home"), "/")
         self.assertEqual(reverse("account_login"), "/accounts/login/")
         self.assertEqual(reverse("account_logout"), "/accounts/logout/")
         self.assertEqual(reverse("google_login"), "/accounts/google/login/")
+        self.assertEqual(reverse("github_login"), "/accounts/github/login/")
