@@ -1,0 +1,31 @@
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# Environment variables & secrets - NEVER commit .env
+.env
+*.env
+.env.*
+!.env.example
+
+# SQLite Database
+*.sqlite3
+*.sqlite3-journal
+db.sqlite3
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Static files / media uploads if generated
+staticfiles/
+media/
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
